@@ -8,6 +8,7 @@ const itemSchema = new mongoose.Schema({
     },
     description: {
         type: String,
+        default: ''
     },
     category: {
         type: mongoose.Schema.Types.ObjectId,
