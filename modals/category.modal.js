@@ -19,4 +19,14 @@ const categorySchema = new Schema({
     timestamps: true
 });
 
+categorySchema.pre('findOneAndDelete', async function(next) {
+    const category = await this.model.findOne(this.getFilter());
+    if (category && category.items.length > 0) {
+        const error = new Error('Cannot delete category with items');
+        error.statusCode = 400;
+        return next(error);
+    }
+    next();
+});
+
 export const Category = mongoose.model("Category", categorySchema);
