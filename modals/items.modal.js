@@ -11,7 +11,8 @@ const itemSchema = new mongoose.Schema({
     },
     category: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Category'
+        ref: 'Category',
+        required: true,
     },
     price: {
         type: Number,
