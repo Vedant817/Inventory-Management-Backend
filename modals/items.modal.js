@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { Category } from "./category.modal.js";
 
 const itemSchema = new mongoose.Schema({
     name: {
@@ -24,5 +25,15 @@ const itemSchema = new mongoose.Schema({
         default: 0
     },
 });
+
+itemSchema.pre('findOneAndDelete', async function(next) {
+    const item = await this.model.findOne(this.getFilter());
+    if(item){
+        await Category.findOneAndUpdate(item.category, {
+            $pull: { items: item._id }
+        });
+    }
+    next();
+})
 
 export const Item = mongoose.model("Item", itemSchema);
